@@ -8,7 +8,7 @@ def main():
     key = 'Prestidigitation'
     outfile = 'out.txt'
     hexfile = 'hex.txt'
-    command = f"openssl aes128 -nosalt -in {infile} -out {outfile} -pass pass:{key} >/dev/null"
+    encrypt_command = f"openssl aes128 -nosalt -in {infile} -out {outfile} -pass pass:{key}"
 
     # Example Flag (total flag len must be a multiple 16)
     # flag{abcdefghij}
@@ -16,7 +16,6 @@ def main():
     flag_prefix='flag{'
     flag_suffix='}'
 
-    #banner_size = 10
     banner_size = 2
 
     printable_chars = ''.join([chr(i) for i in range(33,127)])
@@ -35,7 +34,7 @@ def main():
         # Execute the openssl encryption operation.
         # AES 128 (no salt, no IV, just a plain 128 bit block cypher operation).
         # Key size should be 16 bytes (128 bits).
-        system(command)
+        system(encrypt_command)
 
         # Extract the hex value information from the 
         system(f'hexdump -C {outfile} >{hexfile}')
@@ -43,11 +42,14 @@ def main():
         # Write out the hexdump information to a single line in our results file.
         # A single line should associate the current flag combination result
         # with the hex information.
+        cont = None
         with open(hexfile) as f:
-            results_file.write(gen_flag)
-            results_file.write('\n')
-            results_file.write(f.read())
-            results_file.write('\n\n')
+            cont = f.read()
+
+        results_file.write(gen_flag)
+        results_file.write('\n')
+        results_file.write(cont)
+        results_file.write('\n\n')
 
         # cleanup
         system(f'rm {infile} {outfile} {hexfile}')
