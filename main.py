@@ -1,13 +1,12 @@
 from generator.flag_generator import FlagGenerator
 
 def main(outfile='results.txt'):
-    # Example Flag (total flag len must be a multiple 16)
-    # flag{abcdefghij}
-
-    fg = FlagGenerator(flag_prefix='flag', banner_size=4)
+    fg = FlagGenerator(flag_prefix='flag', banner_size=10)
     results_file = open(outfile, 'w')
 
-    for gen_flag in fg.generate():
+    # Generate 1,000 flags
+    for i in range(1_000):
+        gen_flag = fg.generate()
         # Generate the actual flag; See 'Example Flag' above for an example.
         results_file.write(gen_flag)
         results_file.write('\n\n')

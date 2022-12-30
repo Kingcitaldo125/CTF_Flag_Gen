@@ -1,4 +1,4 @@
-from itertools import combinations as comb
+from random import randrange
 
 class FlagGenerator:
     def __init__(self, flag_prefix, banner_size) -> None:
@@ -9,10 +9,12 @@ class FlagGenerator:
         self.printable_chars = ''.join(ls)
 
     def generate(self):
-        for item in comb(self.printable_chars, self.banner_size):
-            yield self.flag_prefix + "{" + ''.join(item) + "}"
+        lpc_len = len(self.printable_chars)
+        midlist = [self.printable_chars[randrange(0, lpc_len)] for i in range(self.banner_size)]
+        return self.flag_prefix + "{" + ''.join(midlist) + "}"
 
 if __name__ == "__main__":
-    fg = FlagGenerator('flag', 4)
+    fg = FlagGenerator(flag_prefix='flag', banner_size=4)
+
     for i in fg.generate():
         print(f'Flag: {i}')
